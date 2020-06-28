@@ -1,18 +1,22 @@
 const mongoose = require('mongoose');
 
+// Connecting to the database
 mongoose.connect('mongodb://localhost:27017/fruitsDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 
+// Defining a schema
 const fruitSchema = new mongoose.Schema({
   name: String,
   rating: Number,
   review: String,
 });
 
+// Defining a collection/model
 const Fruit = mongoose.model('Fruit', fruitSchema);
 
+// Inserting a new items to the fruits collection
 const fruit = new Fruit({
   name: 'Apple',
   rating: 7,
@@ -53,22 +57,21 @@ const banana = new Fruit({
   review: "Weird texture"
 });
 
-Fruit.insertMany([kiwi, orange, banana], function(err) {
+// Inserting many items to the fruits collection
+// Fruit.insertMany([kiwi, orange, banana], function(err) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Succesfully saved all the fruits to fruitsDB");
+//   }
+// });
+
+// Finding items in collection
+Fruit.find(function(err, fruits) {
   if (err) {
     console.log(err);
   } else {
-    console.log("Succesfully saved all the fruits to fruitsDB");
+    mongoose.connection.close();
+    console.log(fruits.map(fruit => fruit.name));
   }
 });
-
-const findDocuments = function(db, callback) {
-  // Get the documents collection
-  const collection = db.collection('fruits');
-  // Find some documents
-  collection.find({}).toArray(function(err, fruits) {
-    assert.equal(err, null);
-    console.log("Found the following records");
-    console.log(fruits)
-    callback(fruits);
-  });
-}
