@@ -33,28 +33,53 @@ const fruit = new Fruit({
 
 const personSchema = new mongoose.Schema({
   name: String,
-  age: Number
+  age: Number,
+  favouriteFruit: fruitSchema
 });
 
 const Person = mongoose.model('Person', personSchema);
 
+const pineapple = new Fruit({
+  name: "Pineapple",
+  score: 9,
+  review: "Great fruit"
+});
+
+// pineapple.save();
+
 const person = new Person({
-  name: "John",
-  age: 37
+  name: "Amy",
+  age: 12,
+  favouriteFruit: pineapple,
+});
+
+const cherry = new Fruit({
+  name: "Cherry",
+  score: 5,
+  review: "Great red fruit"
+});
+
+cherry.save();
+Person.updateOne({_id: "5ef90c5e5daedd50fb47cd97"}, { favouriteFruit: cherry }, function(err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("John Succesfully updated");
+  }
 });
 
 // person.save();
 
 
 // Finding items in collection
-Fruit.find(function(err, fruits) {
-  if (err) {
-    console.log(err);
-  } else {
-    mongoose.connection.close();
-    console.log(fruits.map(fruit => fruit.name));
-  }
-});
+// Fruit.find(function(err, fruits) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     mongoose.connection.close();
+//     console.log(fruits.map(fruit => fruit.name));
+//   }
+// });
 
 // Update an item in collection
 // Fruit.updateOne({_id: "5ef906f35181694f3f36d914"}, {name: "Peach"}, function(err ) {
