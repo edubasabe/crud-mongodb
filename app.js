@@ -8,8 +8,15 @@ mongoose.connect('mongodb://localhost:27017/fruitsDB', {
 
 // Defining a schema
 const fruitSchema = new mongoose.Schema({
-  name: String,
-  rating: Number,
+  name: {
+    type: String,
+    required: [true, "Please check your data entry, no name specified!"]
+  },
+  rating: {
+    type: Number,
+    min: 1,
+    max: 10
+  },
   review: String,
 });
 
@@ -18,12 +25,11 @@ const Fruit = mongoose.model('Fruit', fruitSchema);
 
 // Inserting a new items to the fruits collection
 const fruit = new Fruit({
-  name: 'Apple',
-  rating: 7,
-  review: 'Pretty solid as a fruit'
+  rating: 10,
+  review: 'Peaches are so yummy!'
 });
 
-// fruit.save();
+fruit.save();
 
 const personSchema = new mongoose.Schema({
   name: String,
@@ -37,34 +43,8 @@ const person = new Person({
   age: 37
 });
 
-person.save();
+// person.save();
 
-const kiwi = new Fruit({
-  name: "Kiwi",
-  score: 10,
-  review: "The best fruit"
-});
-
-const orange = new Fruit({
-  name: "Orange",
-  score: 4,
-  review: "Too sour for me"
-});
-
-const banana = new Fruit({
-  name: "Banna",
-  score: 3,
-  review: "Weird texture"
-});
-
-// Inserting many items to the fruits collection
-// Fruit.insertMany([kiwi, orange, banana], function(err) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Succesfully saved all the fruits to fruitsDB");
-//   }
-// });
 
 // Finding items in collection
 Fruit.find(function(err, fruits) {
